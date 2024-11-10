@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Position Size Calculator</title>
+    <script src="calculator.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-gray-100 p-4">
+    <div class="w-full max-w-7xl mx-auto space-y-4">
+      <div class="bg-white rounded-lg shadow-lg">
+        <!-- Header -->
+        <div class="p-6 border-b">
+          <h1 class="text-2xl font-semibold flex items-center gap-2">
+            <i data-lucide="calculator" class="h-6 w-6"></i>
+            Position Size Calculator
+          </h1>
+        </div>
+
+        <!-- Content -->
+        <div class="p-6">
+          <!-- Quick Summary Box -->
+          <div
+            id="summaryBox"
+            class="grid grid-cols-2 md:grid-cols-4 gap-4 bg-blue-50 p-4 rounded-lg mb-6 hidden"
+          >
+            <div class="text-center">
+              <p class="text-sm text-gray-600">Position Size</p>
+              <p class="font-bold text-lg">
+                <span class="position-size">0.000</span> tokens
+                <span
+                  class="text-sm font-normal text-gray-600 block position-type"
+                  >Long 5x</span
+                >
+              </p>
+            </div>
+            <div class="text-center">
+              <p class="text-sm text-gray-600">Max Loss</p>
+              <p class="font-bold text-lg text-red-600 max-loss">-0.00 USDT</p>
+            </div>
+            <div class="text-center">
+              <p class="text-sm text-gray-600">Total Profit (All TPs)</p>
+              <p class="font-bold text-lg text-green-600 total-profit">
+                +0.00 USDT
+              </p>
+            </div>
+            <div class="text-center">
+              <p class="text-sm text-gray-600">Avg R:R</p>
+              <p class="font-bold text-lg avg-rr">0.00</p>
+            </div>
+          </div>
+
+          <!-- Main Grid Layout -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <!-- Left Column - Input Controls -->
+            <div class="space-y-6">
+              <!-- Account Settings -->
+              <div>
+                <h2 class="text-xl font-semibold flex items-center gap-2 mb-4">
+                  <i data-lucide="bar-chart-3" class="h-5 w-5"></i>
+                  Account Settings
+                </h2>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  <div>
+                    <label class="text-sm font-medium"
+                      >Account Size (USDT)</label
+                    >
+                    <input
+                      type="number"
+                      name="accountSize"
+                      class="w-full p-2 border rounded"
+                      value="1000"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium"
+                      >Risk Percentage (%)</label
+                    >
+                    <input
+                      type="number"
+                      name="riskPercentage"
+                      class="w-full p-2 border rounded"
+                      value="1.5"
+                      min="0.1"
+                      max="100"
+                      step="0.1"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium">Leverage (x)</label>
+                    <input
+                      type="number"
+                      name="leverage"
+                      class="w-full p-2 border rounded"
+                      value="5"
+                      min="1"
+                      max="20"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium">Target R:R Ratio</label>
+                    <input
+                      type="number"
+                      name="targetRR"
+                      class="w-full p-2 border rounded"
+                      value="0.7"
+                      min="0.1"
+                      max="10"
+                      step="0.1"
+                    />
+                    <p class="text-xs text-gray-500 mt-1">Affects all TPs</p>
+                  </div>
+                </div>
+
+                <!-- TP Distribution -->
+                <div class="mt-4">
+                  <h3 class="text-sm font-medium mb-2">
+                    Take Profit Distribution
+                  </h3>
+                  <div class="grid grid-cols-4 gap-4">
+                    <div>
+                      <label class="text-xs text-gray-600">TP1 %</label>
+                      <input
+                        type="number"
+                        name="tp1Percentage"
+                        class="w-full p-2 border rounded"
+                        value="25"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-600">TP2 %</label>
+                      <input
+                        type="number"
+                        name="tp2Percentage"
+                        class="w-full p-2 border rounded"
+                        value="25"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-600">TP3 %</label>
+                      <input
+                        type="number"
+                        name="tp3Percentage"
+                        class="w-full p-2 border rounded"
+                        value="25"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                    <div>
+                      <label class="text-xs text-gray-600">TP4 %</label>
+                      <input
+                        type="number"
+                        name="tp4Percentage"
+                        class="w-full p-2 border rounded"
+                        value="25"
+                        min="0"
+                        max="100"
+                      />
+                    </div>
+                  </div>
+                  <div class="text-xs text-gray-500 mt-1">
+                    Total must equal 100%
+                  </div>
+                </div>
+              </div>
+
+              <!-- Trade Setup -->
+              <div>
+                <h2 class="text-xl font-semibold mb-4">Trade Setup</h2>
+                <div class="flex gap-4 mb-4">
+                  <button
+                    class="btn-long px-6 py-2 rounded-lg font-medium bg-green-500 text-white"
+                  >
+                    Long
+                  </button>
+                  <button
+                    class="btn-short px-6 py-2 rounded-lg font-medium bg-gray-200 text-gray-700"
+                  >
+                    Short
+                  </button>
+                </div>
+                <div class="grid grid-cols-3 gap-4">
+                  <div>
+                    <label class="text-sm font-medium"
+                      >Entry Price (USDT)</label
+                    >
+                    <input
+                      type="number"
+                      name="entryPrice"
+                      class="w-full p-2 border rounded"
+                      value=""
+                      step="0.00000001"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium">Stop Loss %</label>
+                    <input
+                      type="number"
+                      name="stopLossPercentage"
+                      class="w-full p-2 border rounded"
+                      value="3.62"
+                      step="0.01"
+                    />
+                  </div>
+                  <div>
+                    <label class="text-sm font-medium"
+                      >Stop Loss Price (USDT)</label
+                    >
+                    <input
+                      type="number"
+                      name="stopLossPrice"
+                      class="w-full p-2 border rounded"
+                      value=""
+                      step="0.00000001"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Column - Results -->
+            <div id="resultsDisplay" class="space-y-4 hidden">
+              <!-- Position Details -->
+              <div>
+                <h3 class="text-lg font-semibold">Position Details</h3>
+                <div class="grid grid-cols-2 gap-4 bg-gray-50 p-4 rounded">
+                  <div>
+                    <p class="text-sm text-gray-600">Initial Margin Required</p>
+                    <p class="font-medium initial-margin">0.00 USDT</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-600">Position Value</p>
+                    <p class="font-medium position-value">0.00 USDT</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-600">Return on Account</p>
+                    <p class="font-medium return-on-account">0.00%</p>
+                  </div>
+                  <div>
+                    <p class="text-sm text-gray-600">Return on Risk</p>
+                    <p class="font-medium return-on-risk">0.00%</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Take Profit Levels -->
+              <div>
+                <h3 class="text-lg font-semibold">Take Profit Levels</h3>
+                <div class="grid grid-cols-1 gap-2 mt-2 tp-levels">
+                  <!-- Take profit levels will be inserted here by JavaScript -->
+                </div>
+              </div>
+
+              <!-- Risk Warning -->
+              <div
+                class="risk-warning hidden mt-4 bg-red-50 p-4 rounded-lg flex items-start gap-2"
+              >
+                <i data-lucide="alert-triangle" class="h-4 w-4 mt-1"></i>
+                <p class="text-sm"></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/lucide.min.js"></script>
+    <script>
+      // Initialize Lucide icons
+      lucide.createIcons();
+    </script>
+  </body>
+</html>
